@@ -1,0 +1,40 @@
+1)Aop Nedir
+2)Oop Nedir Oop Prensibleri Nelerdir?.Açıkla
+3)Solid ve solid Prensibleri
+4)Katmanlı Mimari?
+5)Clean Architecture?
+6)Trigger,Views,Transaction,Callback,Indexers,Sql Crud-Sql Join?
+7)Değer ve Referans Tipler
+8)Sıralama Algoritmaları?
+9)Generic Repository?
+10)Generic Class ve Generic Tipler?
+11)Overload Nedir Örnek Ver?
+12)İnterface ve abstract farkları açıkla?İnterface ve abstract nedir?
+13)Forign key,Primary Key,Unic kEY NEDİR Sql?
+14)Orm Nedir? Örnek ver?
+15)Net ve Net Core Farkları Nelerdir?
+16)İki eşittir ve 3 eşittir farkları?
+17)Try Cathc Finally Yapısı?
+18)Exception ve Exception Handgling?
+19)Garbrage Collector nedir?
+20)Ioc nedir ınversion of controller ? ornek ver?
+21)Let ,cons,any,var kavramlarını açıkla?
+22)HtmlIntercaptor nedir?
+23)MiddleWare Nedir?
+24)Component Nedir?
+25)Statik Metot,Virtual Metot?
+26)Sınıflar Arası Çoklu Kalıtım Yoktur Sadece Çoklu Kalıtım İnterfacelerde Vardır?
+27)This anahtar sozcüğü?
+28)Extension Metot Nedir?
+29)Sanal Sınıflardan Nesne Uretilebilir Mi?
+30)Restful Servis Nedir.
+31)Api Nedir?Restfull Api Nedir?
+32)IactionResult,ViewResult?jSONresult,StatusCodeResult?
+33)Mvc nedir?
+34)Postgresql in Mssql den farkları?
+35)Modern Js Frameworkleri?
+36)Framework ve library Nedir?
+37)Organizasyon Kültürü Nedir?
+38)Sizi neden işe alalım?En salakça soru bu ? :)
+39)Veri tabanı ilişkilendirmesi sanal olarak örnekle?
+40)Code first ve Dbfirst Nedir?Hangisini kullanıyorsunuz?
