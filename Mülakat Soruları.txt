@@ -38,3 +38,4 @@
 38)Sizi neden işe alalım?En salakça soru bu ? :)
 39)Veri tabanı ilişkilendirmesi sanal olarak örnekle?
 40)Code first ve Dbfirst Nedir?Hangisini kullanıyorsunuz?
+41)Dtos nedir?Automapper Nedir?
