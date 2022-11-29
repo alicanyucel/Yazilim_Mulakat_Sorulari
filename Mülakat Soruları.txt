@@ -1,41 +1,529 @@
 1)Aop Nedir
+Aspect oriented programming kısa adıyla AOP, uygulamanızdaki iş mantığı (business logic) ile uygulamanızın genelinde ortak kullanılabilecek olan yapıların ayrılmasını sağlar. İş mantığı haricindeki yapılara örnek verecek olursak;
+logging, exception handling, caching, authentication, authorization, transaction vb. işlemlerdir.
 2)Oop Nedir Oop Prensibleri Nelerdir?.Açıkla
+ Encapsulation prensibinin maksadı class’a ait property’lere her classın istediği gibi erişmesini ve değiştirmesini engellemektir. Erişim kısıtlanmayacaksa bile erişimi getter/setter methodları gibi yöntemlerle kontrol altına almaktır
+  ınheritance: Adından tahmin edilebileceği üzere herhangi bir class’ın üst class’larına ait olan method ve propertyleri kalıtım yoluyla almasıdır. 
+  Abstraction:Daha derli toplu bir ifadeyle objelerin ayrıntılarıyla uğraşmak yerine yalnızca girdi ve çıktılarına odaklanarak tasarımı daha iyi oluşturmayı ve anlamayı sağlamaktır.
+  Polymorphism, (çok biçimlilik) methodların objeye göre farklı çıktılar üretmesi veya farklı işler yapmasıdır. Yani alışageldiğimiz gibi methodlara sabit görevler vermek yerine onlara çok biçimli (polimorf) davranacak şekilde bir esneklik vermektir.
 3)Solid ve solid Prensibleri
+S — Single-responsibility principle
+ÖZET: Bir sınıf (nesne) yalnızca bir amaç uğruna değiştirilebilir, o da o sınıfa yüklenen sorumluluktur, yani bir sınıfın(fonksiyona da indirgenebilir) yapması gereken yalnızca bir işi olması gerekir.
+
+O — Open-closed principle
+ÖZET: Bir sınıf ya da fonksiyon halihazırda var olan özellikleri korumalı ve değişikliğe izin vermemelidir. Yani davranışını değiştirmiyor olmalı ve yeni özellikler kazanabiliyor olmalıdır.
+
+L — Liskov substitution principle
+ÖZET: Kodlarımızda herhangi bir değişiklik yapmaya gerek duymadan alt sınıfları, türedikleri(üst) sınıfların yerine kullanabilmeliyiz.
+
+I — Interface segregation principle
+ÖZET: Sorumlulukların hepsini tek bir arayüze toplamak yerine daha özelleştirilmiş birden fazla arayüz oluşturmalıyız.
+
+D — Dependency Inversion Principle
+ÖZET: Sınıflar arası bağımlılıklar olabildiğince az olmalıdır özellikle üst seviye sınıflar alt seviye sınıflara bağımlı olmamalıdır.
+
+
 4)Katmanlı Mimari?
+Katmanlı mimari bir istemci-sunucu mimarisidir. Uygulamayı katmanlarına ayırarak geliştiricilere bir katmanı düzenleme veya özel bir katman ekleme gibi seçenekler sunan bir modeldir. Bu mimari n-tier architecture pattern olarak da bilinir. Yazılım mühendisliğin de en çok kullanılan mimarilerden bir tanesidir. Geliştiricilerin esnek ve yeniden kullanılabilir uygulamalar oluşturmalarına olanak sağlar. Her katmanın kendine özgü rolü ve sorumluluğu vardır. En çok kullanılan 3 katmanlı mimaridir (three-tier architecture).
+
 5)Clean Architecture?
+Framework bağımsız
+Test edilebilir
+Arayüz bağımsız
+Veritabanı bağımsız
+Hexogonal ve Onion mimarileri ile ayrıntılarında biraz farklılık gösterseler de, birbirlerine çok benziyorlar. Çünkü bu mimariler temelde aynı amaca hizmet eder yani işlerimiz katmanlara ayırmamıza.
+
+Katmanlara neden ayırmalıyız ?
+
+Bu sorunun birden çok yanıtı var aslında. Öncelikle sistemimizin iş parçacıklarının birbirinden ayrı, herhangi bir değişiklikte diğer parçaları da değiştirmeyecek bir yapıda olmasını isteriz. Tabi bu tek sebep değil projenin boyutu arttıkça okunulabilir olması da çok önemlidir. İş parçacıklarını gerçekten birbirinden bağımsız yada bir diğer adıyla gevşek bağlılık(loose-coupling) yapmış isek kolayca test yazabilir ve sonradan yapılan değişikliklerde sistemimizde herhangi bir sıkıntı olup olmadığını gözlemleyebiliriz.
+
+Katmanlar 📚
+Aşağıdan da görebileceğiniz gibi katmanlarımız iç içe daireler şeklinde ilerliyor. Her bir daire sadece bir içteki daireye ihtiyaç duyar. Mesela Application katmanın bağımlılığı sadece Domain katmanıdır.
+
+
+Clean Architecture Yapısı
+İç daireden başlayarak dışarıya doğru adım adım açıklayarak ilerleyelim.
+
+Domain Katmanı 💡
+Domain katmanında projenin kesinlikle ihtiyaç duyacağı olmazsa olmazlarımızdan olan elemanlarımız olacak bunlar nedir ?
+
+Entities
+
+ORM araçlarının gelişmesiyle beraber proje içinde oluşturduğumuz sınıflar ile veritabanı oluşturabilmemiz bu katmanda çok işimize yarıyor.
+
+Yazım ASP.Net üzerine olduğu için burada küçük bir not bırakmak istiyorum. Veritabanı nesnelerinizi oluştururken Fluent API kullanmamız gerekiyor.
+
+Value Object
+
+Kendine ait eşsiz bir kimliği olan nesneler Entity olarak adlandırılırken, kendine ait bir kimliği olmayanlar ise value object olarak adlandırılır. Immutable ve mutable kavramındaki mutable: Entity ve immutable: Value Object olarak düşünebiliriz.
+
+Logic
+
+Gerçekten domain ilgilendiren mantıksal işlemlerimiz
+
+Exceptions
+
+Domain için oluşturduğumuz exception sınıflarının da bu katmanda olması gerekiyor.
+
+Burada asıl önemli olan belki de en çok kullanılan en azından benim kullandığım kısım Entities kısmıdır. Diğerleri çok daha kompleks işlerde kullanılabilir.
+
+Application Katmanı 🈸
+Gelelim Application katmanına, burası bizim genel olarak mantıksal işlemlerimizi yaptığımız katmandır. Örnek olarak gelen isteklerin işlendiği validasyonlarının yapıldığı veritabanı kayıtlarının yapıldığı katmandır. Kafanızda tam oturtturamamış olabilirsiniz ama sorun değil detaylı bir şekilde proje üzerinde göreceğiz. Bu katmanın tek bağlılığı domain katmanı olmalıdır.
+
+Interfaces
+
+Mail servisi veya notification arayüzleri olabilir.
+
+Models
+
+Application katmanında kullanacağınız modeller olabilir.
+
+Logic Commands / Queries
+
+Burası önemli servise gelen isteklerin Request ve Response modellerini, bu servislerin mantıksal işlemlerini ve veritabanı kayıtlarının bulunduğu kısım.
+
+Validators
+
+Gelen isteklerin validasyonları bulunur.
+
+Exceptions
+
+Oluşan hatalar için de kişiselleştirdiğimiz Exception sınıflarımız bulunur.
+
+…
+
+Gelen isteklerin bir okuma işlemi mi yoksa yazma işlemi mi durumlarına göre farklı modeller ve farklı metotlar ile işlemlerimizi yaparız. Kısacası okunabilir, düzenlenebilir ve test edilebilir bir yapı sunar. Bu tasarım kalıbı(CQRS) hakkında daha detaylı bilgi için Microsoft Docs içinde güzel bir yazı var buradan ulaşabilirsiniz. Uygulama içi mesajlaşma için ise MediatR, validasyon işlemleri için ise FluentValidation paketini kullanacağız.
+
+Persistence Katmanı 🎫
+Bu katman genel olarak DbContext işlemleriyle alakalıdır. Migrationların yönetimi, veritabanı tablolarının configleri için oluşturulmuş Fluent API sınıfları ve default veritabanı değerleri. DbContext bu katmanda olmasına rağmen hala veritabanı bağımlılığımız yoktur. ConnectionString AppSettings içinden erişilecek.
+
+DbContext
+
+Migrations
+
+Configurations
+
+Seeding
+
+Infrastructure Katmanı ➕
+Bu katmanda ise sisteme eklenecek external şeyler bulunur. Bu katmana hiçbir katmanın bağlılığı olmamalıdır.
+
+Email / SMS
+
+System Clock
+
+Notification
+
+Presentation Katmanı 🎆
+Bu katmanda isminden anlaşılacağa üzere sunum katmanı. Ben Web API projesinde çalıştım. Bu katmanda mantıksal işlemler olmamalıdır. O iş Application katmanında olmalıdır.
+
+SPA - Angular veya React
+
+Web API
+
+MVC
+
+Web Forms
+
+
 6)Trigger,Views,Transaction,Callback,Indexers,Sql Crud-Sql Join?
+Trigger yani tetikleyici, ilişkisel veri tabanı yönetim sistemlerinde bir tabloda belirli olaylar meydana geldiği zaman yani ekleme, güncelleme, silme işlemlerinden biri gerçekleşmeden önce veya sonra çalışan ve belirli işlemleri kodlandığı şekilde yerine getiren yordamdır.
+View-Bir veritabanında görünüm, veritabanı kullanıcılarının kalıcı bir veritabanı toplama nesnesinde olduğu gibi sorgulayabileceği, veriler üzerinde depolanan bir sorgunun sonuç kümesidir. Bu önceden oluşturulmuş sorgu komutu, veritabanı sözlüğünde tutulur.
+Transaction:Bir veritabanı işlemi, bir veritabanına karşı bir veritabanı yönetim sistemi içinde gerçekleştirilen, diğer işlemlerden bağımsız olarak tutarlı ve güvenilir bir şekilde ele alınan bir iş birimini sembolize eder. Bir işlem genellikle bir veritabanındaki herhangi bir değişikliği temsil eder
+Callback:Bir geri çağırma fonksiyonu, başka bir fonksiyona geçirilen bir parametre şeklindeki fonksiyondur.
+Indexer:Indexer özel tanımlı bir property'dir ve sadece class içerisinde tanımlanabilir. Tanımlandığı class'a indexlenebilir özelliği kazandırır. Array işlemlerinde kullandığımız [ ] operatörünü tanımlamış olduğumuz bir class'ı diziymiş gibi işlemler yapabilmek içinde kullanabiliriz.
+JOIN nedir?
+Veri tabanı tasarımı ve tablo oluşturma sırasında tablolar çeşitli parçalara ayrılarak veri tekrarının önüne geçilmiş olur.
+
+Parçalara ayrılan tablolar tek başına bir anlam ifade etmeyebilir.
+
+Parçaların anlamlı olabilmesi için tabloların birleştirme işlemine tabi tutulması gerekir.
+
+SQL JOIN ifadesi kullanılarak tablolar sanal olarak birleştirilir ve veriler anlamlı hale gelir.
+
+Özetle; SQL JOIN ifadesi, tabloları birleştirmek için kullanılır.
+
+NOT: JOIN iki veya daha fazla tabloyu birleştirmek için kullanılır.
+
+SQL JOIN kullanımı
+SQL join ifadesi kullanılan VTYS göre değişmekle beraber genellikle aşağıdaki gibidir.
+
+SELECT tablo_adi.sutun_adi, ...
+  FROM tablo_A
+  {INNER JOIN | LEFT JOIN | RIGHT JOIN} tablo_B ON tablo_A.sutun_adi = tablo_B.sutun_adi;
+Aşağıdaki örnekleri kullanarak tabloları birleştirelim.
+
+kategoriler tablosunda bulunan veriler:
+
+kat_id	kat_adi
+1	Bilgisayar
+2	Telefon
+3	Elektronik
+urunler tablosunda bulunan veriler:
+
+urun_id	urun_adi	urun_fiyat	kat_id
+1	Masaüstü Bilgisayar	1799	1
+2	Akıllı Telefon	799	2
+3	Dizüstü Bilgisayar	2199	1
+4	SQL Kitabı	59	99
+Örneklerde bulunan kategoriler tablosu kat_id ile urunler tablosundaki kat_id adlarına ve değerlerine dikkat edin.
+
+İki parçaya ayrılan tabloları birleştirerek kategorilerde bulunan ürünleri listeleyelim.
+
+Bunun için join kullanabileceğimiz gibi iki tabloyu aşağıdaki gibi sırayla yazarak birleştirebiliriz.
+
+SELECT * FROM kategoriler, urunler;
+Bu birleştirme türü CROSS JOIN olarak adlandırılır.
+
+Komut çalıştırıldığında iki tabloda bulunan veriler birbiriyle birleştirilecektir.
+
+Birleştirme için bir koşul belirtilmediğinden kategoriler tablosundaki her satır, urunler tablosundaki tüm satırlarla eşleşir.
+
+Koşul belirterek sadece ilişkili olan sütunları birleştirmek için WHERE koşulu kullanılabilir.
+
+SELECT * FROM kategoriler, urunler WHERE urunler.kat_id = kategoriler.kat_id;
+Bu birleştirme türü INNER JOIN olarak adlandırılır.
+
+SQL Join türleri
+Çoğunlukla kullanılan join türleri şunlardır.
+
+(INNER) JOIN: İki tablodaki eşleşen kayıtlar için kullanılır.
+LEFT (OUTER) JOIN: İki tablodaki eşleşen kayıtlar ve eşleşmeyen sol kayıtlar için kullanılır.
+RIGHT (OUTER) JOIN: İki tablodaki eşleşen kayıtlar ve eşleşmeyen sağ kayıtlar için kullanılır.
+FULL (OUTER) JOIN: İki tablodaki eşleşen kayıtlar ve eşleşmeyen sol ve sağ kayıtlar için kullanılır. LEFT ve RIGHT JOIN birleşimidir.
+SQL JOIN ayrıca ekleme, güncelleme ve silme işlemlerinde de kullanılabilir.
 7)Değer ve Referans Tipler
+Değer tipindeki veri tipleri ile bir değişken tanımlandığında değişkenin değeri Stack adı verilen bellek bölgesinde tutulur. Referans tipindeki veri tipinde bir değişken tanımlandığında ise değişkenin değeri Heap bölgesinde ve Heap bölgesindeki değeri gösteren adres değeri ise Stack bölgesinde tutulur.
 8)Sıralama Algoritmaları?
+Seçmeli Sıralama (Selection Sort)
+Eklemeli Sıralama (Insertion Sort)
+Kabuk Sıralaması (Shell Sort)
+Birleştirmeli Sıralama (Merge Sort)
+Hızlı Sıralama (Quick Sort)
+Kabarcık Sıralaması (Bubble Sort)
 9)Generic Repository?
+
 10)Generic Class ve Generic Tipler?
+Generic’ler tasarlandığımız interface, class, metod yada parametrelerin (argümanların) belirli bir tip için değil bir şablon yapısına uyan her tip için çalışmasını sağlayan bir yapıdır. 
 11)Overload Nedir Örnek Ver?
+Overload kelime anlamı olarak Aşırı Yükleme anlamına gelmektedir. C# programlama dilinde overload dendiğinde, aynı isme sahip birden fazla metod akla gelir. Bu metodlar aynı isimde olmalarına rağmen, farklı imzalara sahiptirler. Bu metodların imzalarını belirleyen unsurlar, parametre sayıları ve parametre tipleridir.
 12)İnterface ve abstract farkları açıkla?İnterface ve abstract nedir?
+Abstract Class	                                                        Interface
+Constructor içerebilir.	                                                Constructor içeremez.
+Static üyeler içerebilir.                                             	Static üyeler içeremez.
+Farklı tipte erişim belirleyici içerebilir.	                            Erişim belirleyiciler kullanılmaz.Default olarak public kabul edilir
+Sınıfın ait olduğu kimliği belirtmek için kullanılır.                 	Sınıfın yapabileceği kabiliyetleri belirtmek için kullanılır.
+Bir sınıf sadece bir tane abstract sınıfı inherit edebilir.           	Bir sınıf birden fazla interface'i sınıfı inherit edebilir.
+Türetilen sınıflar sınıfın hepsini veya bir kısmını da implement eder  	İnterface ' i tamamen implement etmek zorundadır.
 13)Forign key,Primary Key,Unic kEY NEDİR Sql?
+Unique Key (UNI / Tekil / Benzersiz Anahtar)
+Unique Key (tekil anahtar), yer aldığı tablo içerisinde bir değeri sadece bir kere alır. İlgili değerin tekrar atanmasına izin verilmez. İşlevi Primary Key (birincil anahtar) ile benzerlik taşısa da, en önemli farklılık Unique Key’in NULL değeri alabilir oluşudur.
+
+Primary Key (PRI / Birincil Anahtar)
+Primary Key (birincil anahtar), bir veri tablosunda yer alan her satır için bir vekil / tanımlayıcı (identify) görevi görür, kısıtlamadır (constraint) ve eşsizdir. Satırlara ait değerlerin karışmaması adına bu alana ait bilginin tekrarlanmaması gerekir. Temel işlevi, verilerin hangi satıra dizileceğine (veya hangi satırda verilerin düzenleneceğine) karar vermesidir. Çoğunlukla tek bir alan (id, user_id, e_mail, username, national_identification_number vb.) olarak kullanılsa da birden fazla alanın birleşimiyle de oluşturulabilir ve genelde sayılar birincil anahtar olarak seçilirler, ancak zorunluluk değildir. Birincil anahtar değeri boş geçilemez ve NULL değer alamaz. İlişkisel veri tabanlarında (relational database management system) mutlaka birincil anahtar olmalıdır. Unutmadan, her birincil anahtar benzersiz iken her benzersiz anahtar birincil değildir. Benzersiz anahtar başlığı altında NULL kullanımına dair bir açıklama düşmüştüm. Bu başlık altında aradaki farklılıkları biraz daha detaylandıralım;
+
+Bir tablo içerisinde birden fazla alan tek bir birincil anahtar ile tanımlanabilir. Ancak, birincil anahtar yapısı her tabloda sadece bir tane olabilir. Benzersiz anahtarda ise böyle bir sınırlama yoktur.
+Birincil anahtarda NULL kullanıma izin verilmez. Acnak, benzersiz anahtarlarda NULL kayıtlara izin verilir.
+Birincil anahtar ile veri tablosu üzerinde bir INDEX tanımı oluşturulur ve her kaydın benzersiz bir tanımı yapılır. Benzersiz anahtar kullanımında ise değerlerin benzersiz olup olmadığına bakılır. Elbette benzersiz anahtarlar da INDEX adıyla tanımlanabilirler ancak bu sadece bir tanımlama olacaktır.
+Foreign Key (Yabancı Anahtar)
+Foreign Key (yabancı anahtar) ikincil anahtar olarak da ifade edilmektedir. Bir veri tablosuna girilebilecek değerleri başka bir veri tablosundaki alanlarla ilişkilendirmeye yarar. Özetle, başka bir tablonun birincil anahtarının bir diğer tablo içerisinde yer almasıdır. Çoğunlukla bir ana tablo (parent) ile alt tablonun (child) ilişkilendirilmesinde kullanılır. Bu sayede olası veri tekrarlarının önüne geçilebilmekte ve ilerleyen zamanda söz konusu olabilecek güncellemelerde ilgili verilerin her yerde güncellenmesi sağlanabilmektedir.
 14)Orm Nedir? Örnek ver?
+ORM Nedir?
+Ado.net kullanılan projelerde veritabanı ile ilgili yapılan işlemlerde yazılımcı doğrudan sql sorguları yazmak durumundadır. ORM ile kod içerisine yazılan sql satırları ortadan kalkmıştır. Veritabanımız içerisinde yer alan tablolar bir sınıf (class), kolondaki alanlarımızın her biri değişken (property) olarak tanımlanmakta, veritabanındaki kayıtlara da ait olduğu sınıfta bir obje olarak erişebilmekte ve kullanabilmekteyiz.
+Programlama dillerinin de kendine ait farklı ORM framework’leri bulunmaktadır.
+
+Dillere göre sık kullanılan ORM örnekleri;
+
+C#: Entity Framework,  Dapper, ECO, XPO, Norm
+Java: Hibernate, Ebean, Torque, JPA,MyBattis
+Php: CakePHP, Codelgniter, RedBean, Doctrine,Propel, PdoMap
+Python: Django, South,Storm
 15)Net ve Net Core Farkları Nelerdir?
+.NET Core nedir?
+.NET Core Microsoft tarafından geliştirilen .NET platformunun devamı olan açık kaynak kodlu yazılım geliştirme platformudur.
+
+.NET hakkında detaylı bilgiye .NET Nedir? yazımdan ulaşabilirsiniz.
+
+.NET yapısı dilden bağımsız olarak geliştirilen bir platform olmasına rağmen Microsoft tarafından sadece Windows işletim sisteminde çalışabilir olarak düzenlenmişti.
+
+Microsoft 2016 yılına .NET ile platform bağımsız olarak geliştirmeye imkan veren .NET Core platformunu duyurdu.
+
+Platform bağımsız
+.NET Core platformu ile .NET platformu arasındaki en önemli fark platform bağımsız olarak geliştirme yapmaya imkan vermesidir.
+
+Windows işletim sisteminde geliştirilen bir uygulama daha sonra Linux, Mac gibi işletim sistemlerinde de çalışır.
+
+Açık kaynak
+.NET Core Apache lisansı altında açık kaynak kodludur.
+
+Modüler
+.NET Core platformu modüler bir yapıdadır.
+
+.NET CLR yapısı değiştirilerek CoreCLR olarak adlandırılan yeni bir CLR geliştirilmiştir.
+
+Yeni CLR ile .NET içerisinde yer alan kütüphaneler ihtiyaca göre seçilerek geliştirme yapmaya imkan vermektedir.
+
+Öncelik
+.NET platformunun önceliği masaüstü uygulamalar geliştirmek iken .NET Core platformunun önceliği servis tabanlı web uygulamaları geliştirmektir.
+
+Ayrıca .NET Core ile masaüstü uygulamalarda geliştirilebilmektedir.
+
+Sonuç
+.NET Core platformunu kütüphane ve içerik olarak .NET Framework platformundan herhangi bir farkı yoktur.
+
+Sadece .NET Framework içerisinde yer alan kütüphaneler .NET Core platformuna belirli sürümlerle taşınmıştır.
+
+.NET platformunun .NET Core platformuna çevrilmesindeki ana sebep platform bağımsız uygulama geliştirme ihtiyacıdır.
+
+Bu ihtiyaç ise bulut ve konteyner olarak adlandırılan teknolojilerin gelişmesidir.
+
+Yani geliştiricilerin .NET Framework platformunu açık kaynak olmasını istemesinden değil birçok firmanın bulut teknolojisine geçmesidir.
+
+Açık kaynak olmasının nedeni ise Java platformundaki ekosistemin .NET içinde olmasını sağlamaktır.
 16)İki eşittir ve 3 eşittir farkları?
+İki eşittir ve üç eşittir arasındaki en temel fark tip ve değer karşılaştırmasıdır. Üç eşittir kullandığınızda iki değerin hem tipini hem de değerini karşılaştırırken iki eşittir ise değerlerin tiplerini eşitleyerek sadece değer karşılaştırması yapar.
 17)Try Cathc Finally Yapısı?
+try bloğu içinde hesaplanacak ifade yer alır. Bu ifadenin hesaplanmasında bir hata oluşmamışsa, catch blokları atlanarak programın çalışması finally bloğu ile devam eder ve daha sonra programın bu bloğu izleyen kısmına geçilir.
+
+try bloğu içindeki işlemde bir hata oluşmuşsa, catch bloklarından hangisi bu hatayı algılayabiliyorsa o catch bloğu içine girilir ve gerekli hata mesajı yazdırılır. Daha sonra program finally bloğu ile yukarıda açıklandığı biçimde çalışmaya devam eder.
+
+ 
+
+NOT: finally bloğu ne olursa olsun çalışacağından burada genellikle try bloğu içinde bellek hatalarına (memory leak gibi) ya da açık kalmış bağlantılara yol açabilecek değişkenler yok edilri.
 18)Exception ve Exception Handgling?
+Javada hata yakalama beş anahtar kelime ile yönetilir; try, catch, throw, throws ve finally. Hata açısından izlemek istediğimiz kodları try bloğuna yazmalıyız. try bloğu içerisinde bir hata oluşursa bu hata fırlatılır. Fırlatılan hatayı catch bloğu yakalar. Sistem tarafından oluşturulan hatalar otomatik olarak fırlatılır fakat bazı durumlarda bizim de manuel olarak hata fırlatmamız gerekir, bu durumda throw ifadesi kullanılır. Bazı durumlarda yazdığımız metodun hangi hataları fırlatabileceğini metod imzasında belirtmemiz gerekir. Bu durumda throws ifadesi kullanılır. Bir try bloğundan sonra hata olsun olmasın mutlaka yapılması gereken bir iş varsa o da finally bloğunda yapılır.
+
+try ve catch bloğunun genel yapısı aşağıdaki gibidir. try tek başına kullanılabilir ama catch ifadesi sadece try ile birlikte kullanılabilir.
 19)Garbrage Collector nedir?
+Bilgisayar Biliminde garbage collection kaynak yönetiminin özel bir adımıdır. Bilgisayar hafızasının yönetilmesi işleminde kullanılmaktadır. Bilgisayar programları çalışma zamanı sırasında bellek ihtiyacı duyarlar ve ihtiyaç duyulmayan hafıza alanları programlar tarafından işletim sistemine iade edilir.
 20)Ioc nedir ınversion of controller ? ornek ver?
+IoC(Inversion Of Control), uygulamanın yaşam döngüsü boyunca birbirine bağımlılığı az (loose coupling) olan nesneler oluşturmayı amaçlayan bir yazılım geliştirme prensibidir. Nesnelerin yaşam döngüsünden sorumludur, yönetimini sağlar. IoC kullanan sınıfa bir interface inject edildiğinde, ilgili interface metotları kullanılabilir olur. Böylece IoC kullanan sınıf sadece kullanacağı metotları bilir, sınıf içerisinde daha fazla metot olsa bile interface’de belirtilen metotlara erişebilecektir.
+
+Sınıf içerisinde yapılacak herhangi bir değişiklikte IoC kullanan sınıf etkilenmeyeceği için yeniden yazılabilir ve test edilebilir yazılım geliştirmemizi sağlar. IoC nesne bağlamalar genellikle uygulama başlangıcında yapılandırılmaktadır. Bu anlamda tek bir yerden yapılan IoC yapılandırmalarının değiştirilmesi ve yönetimi de oldukça kolaydır.
+
+IoC kullanmanın avantajlarını şöyle sıralayabiliriz:
+
+Loosely coupled (bağımlılığı az) sınıflar oluşturma
+Kolay unit test yazma
+Yönetilebilirlik
+Modüler programlar
+Farklı implementasyonlar arası kolay geçiş
 21)Let ,cons,any,var kavramlarını açıkla?
+Var
+Kapsam: Function Scope.
+Function içinde var kullanılarak tanımlanmış değişkenlere fonksiyon dışında erişim sağlanamaz.
+Tanımlanan değişkenler sonradan değiştirilebilir.
+Değişkenler kodun herhangi bir yerinde birden fazla kez kullanılabilir.
+Başlatmadan bildirilebilir.
+Varsayılan değeri “undefined” yani tanımsız olduğu için başlatma yapılmadan erişilebilir.
+Let
+Kapsam: Block Scope.
+Tanımlandığı kapsam içerisinde erişilebilir ve bunun dışında erişilemezler.
+Sonradan tekrar değiştirilebilir.
+Fakat aynı kapsam içerisinde yalnızca bir sefer tanımlanabilir.
+Başlatmadan bildirilebilir.
+Bir “error” yani hata döndürdüğü için başlatma olmadan erişilemez.
+Const
+Kapsam: Block Scope.
+Tanımlandığı kapsam içinde erişilebilir ve bunun dışında erişilemezler.
+Sonradan değiştirilemez.
+Aynı kapsam içinde yalnızca bir sefer tanımlanabilir.
+Başlatma olmadan bildirilemez.
+Başlatma olmadan bildirilemeyeceği için başlatma olmadan erişilemez.
+Hatırlatma
+Block Nedir?
+Blok, {…} ile sınırlandırılmış bir kod parçasıdır. Kıvrımlı parantezler içindeki herhangi bir şey bir bloktur.
+Hoisting Nedir?
+Hoisting, Interpreter’ın önce tanımlanan şey hakkında hafızada yer açması anlamına gelir.
+Hoisting, Javascript’te değişkenlerimizin başta tanımlanması işlemidir. Hoisting olayının temel amacı aşağıda tanımladığınız değişkenlere yukardan veya herhangi bir yerden rahat bir şekilde ulaşmanızdır.
 22)HtmlIntercaptor nedir?
+Interceptor’lar client tarafından sunucuya giden requestlerin modifiye edilerek sunucuya ulaşmasını sağlar. Interceptor’lar sayesinde requestler’e müdehale ederiz ve bu da bir çok noktada bize pratiklik sağlar. Şimdi bunu örnekler anlatmaya başlayalım.
 23)MiddleWare Nedir?
+Middleware, birbirleri ile iletişim halindeki uygulamalar arasında, tekrar eden görevleri gerçekleştirmek amacıyla yer alan ara yazılımlardır. Tek başlarına bir işlem gerçekleştirmezler. Örneğin, dağıtılmış uygulamalar için iletişim ve veri yönetimini sağlayabilirler. Ancak, doğrudan bir iletişim başlatmazlar ya da veri alışverişi gerçekleştiremezler3.
+
+Özetlemek gerekirse, middleware (ara uygulama veya orta katman) aracılığı ile bir web sunucusu kullanıcının profili ile ilişkili olarak dinamik web sayfaları döndürebilir. Burada kullanıcının oturum/kimlik yönetimini ara uygulama ele alır. Klasik bir web uygulamasında kullanıcı istek gönderir ve karşılığında sunucundan bir cevap alır. Gelişmiş bir yapıda ise istek ara uygulamaya iletilir. 
 24)Component Nedir?
+View Component bizim için yeni bir terimdir. Asp.Net Core ile hayatımıza giriş yapmıştır. Peki nedir bu view component ve niçin kullanırız ?
+
+View Component
+
+Daha önceden Asp.Net MVC kullananlar bilir oradaki partial view'e benzemektedir ve Partial viewden daha iyidir.(Microsoft diyor ve bence haklılar da)
+
+Birden çok  view'de kullanılabilir ve yeniden kullanılabilir birleşen(component) yazmamızı sağlar.
+
+Asenkron olarak kullanabiliriz.
+
+Url'den ulaşılamaz.(Asp Net MVC de partial view'imizin adını url'den yazarak ulaşılabiliyorduk. Url'den ulaşılabilir olmasını istemediğimiz zamansa ChieldOnly attribute kullanıyorduk ve url çağrıldığında ulaşılamıyordu ve bize hata fırlatıyordu.)
+
+Test edilmesi kolay bir yapısı vardır.
+
+View Component Nerelerde Kullanılır? Örnek olarak;
+
+Dinamik menüler,
+
+Login paneli,
+
+Alışveriş sepeti,
+
+En son yazılar gibi vb. yapılarda kullanabiliriz.
 25)Statik Metot,Virtual Metot?
+Virtual metotlar kalıtım yolu ile aktarıldıkları sınıfların içerisinde override edilerek değiştirilebilirler. Eğer override edilmezlerse temel sınıf içerisinde tanımlandıkları şekilde çalışırlar.
+Statik metot Main(), herhangi bir nesne oluşturulmadan önce çağırılması gerektiği için static olarak tanımlanmıştır. Başka bir deyişle de bir nesne metodun üreteceği sonucu etkilemeyecek ise o metot static olarak tanımlanır.
 26)Sınıflar Arası Çoklu Kalıtım Yoktur Sadece Çoklu Kalıtım İnterfacelerde Vardır?
 27)This anahtar sozcüğü?
+this anahtarı:Yapıcı metod içerisinden yukarıda tanımlanan nesne değişkenlerine erişilmek istenirse this anahtar kelimesi kullanılır. this kelimesi, o anda üzerinde işlem yapılan nesnenin referansını döndürür ve böylece nesne değişkenlerine erişmiş oluruz.
 28)Extension Metot Nedir?
-29)Sanal Sınıflardan Nesne Uretilebilir Mi?
+Kelime anlamı genişletilebilir metod olan Extension Method'lar C#3.0 ile hayatımıza girmiştir ve yaptığı iş itibatiyle kullanım açısından son derece faydalı metodlardır. Tek cümleyle özetlemek gerekirse class ve struct yapılarını modify etmeden ilgili struct yada class'için extension metodlar eklememizi sağlar.
+
+ Extesion metod yazarken uymamız gereken bir kaç kural vardır. Bunlar;
+
+Extension metodlar static bir class içerisinde static olarak tanımlanmalıdır. 
+Extend edilecek class ilgili extension metoda metodun ilk parametresi olarak verilip önünde this keyword'ü ile tanımlanmalıdır
+Extension metod da tanımlı parametrelerden sadece 1 tanesi this keyword'ü ile tanımlanır
+29)Sanal Sınıflardan Nesne Uretilebilir Mi?  
+Hayır nesne türetilemez
 30)Restful Servis Nedir.
+Httpp üzerinden client ve server aracaılığı işletişim kuran yapılar put delete,putch,post,get gibi
 31)Api Nedir?Restfull Api Nedir?
+REST API nedir ne işe yarar?
+REST API, istemci ve sunucu arasında XML, JSON, HTML, TEXT başta olmak üzere pek çok formatta veri taşıyarak uygulamaların haberleşmesini sağlar. REST standartlarına uygun yazılan web servislerine RESTful servisler denir.
+API Nedir?
+API'ler, iki yazılım bileşeninin belirli tanımlar ve protokoller aracılığıyla birbiriyle iletişim kurmasına olanak tanıyan mekanizmalardır. Örneğin, meteoroloji müdürlüğünün yazılım sistemi, günlük hava durumu verilerini içerir. Telefonunuzdaki hava durumu uygulaması, API'ler aracılığıyla bu sistemle "konuşur" ve telefonunuzda size günlük hava durumu güncellemelerini gösterir.
 32)IactionResult,ViewResult?jSONresult,StatusCodeResult?
+View view dönewr wjson json dönewr ıaction temel sınıf status da http code döner redirect de kontrolle ve actiona yönlendirir.
 33)Mvc nedir?
+Model: Tasarımın en alt kısmıdır. Veriyi yönetmek ile görevlidir.
+View: Kullanıcıya verinin tamamını veya belirli kısımlarını görüntülemekten sorumludur.
+Controller: Model ve view arasındaki etkileşimleri kontrol eder.
 34)Postgresql in Mssql den farkları?
+Postgresql ücretiss mssql ücretli
 35)Modern Js Frameworkleri?
+Angular,Vue,React
 36)Framework ve library Nedir?
-37)Organizasyon Kültürü Nedir?
-38)Sizi neden işe alalım?En salakça soru bu ? :)
+Framewworwk uygulama çatısı dır uygulamayı o yapıya göre değiştiririz librarde mettotlar topluluğudur.
+37)Organizasyon Kültürü Nedir
+Sirkete alıştıkça rahatlamalar giriş çıkış saatlerinde esneklik gibi
 39)Veri tabanı ilişkilendirmesi sanal olarak örnekle?
+Bire bir coka cok bire cok
 40)Code first ve Dbfirst Nedir?Hangisini kullanıyorsunuz?
+Code first migration yapısnı kullanır veri tabanını kodla otomatik oluşturur.Db First de ise veri tabanını önce oluşturup ilişkilendirmelerini yaparız sonra modelleriz:
 41)Dtos nedir?Automapper Nedir?
+Automapper: Veri tabanındaki tabloyla benim classlarım arasında bazı yerlerin kapsullenmesini sağlayan kütüphane
+En başta DTO yani Data Transfer Object kullanım alanını açıklamak gerekirse, bir kaynaktan aldığımız veriyi, kullanacağımız yere göre hazırladığımız sınıflara DTO denir. Bu dil bağımsız bir yöntemdir.
+
+Verilerimizi her zaman veritabanında sakladığımız gibi göstermek istemeyebiliriz. Örnek vermek gerekirse veritabanında bir müşterinin adını ve soyadını farklı alanlarda tutup, UI’da birleşik göstermek için DTO sınıfları oluştururuz yada bir tablonun CRUD işlemleri için farklı DTO’lar oluşturabiliriz.
+Lazy Loading
+
+Lazy Loading, sayfada yer alan bir ögenin ihtiyaç duyulmadığı takdirde çağrılmaması prensibi ile çalışır yani bir nesne örneğinin gerçekten ihtiyaç duyulacağı ana kadar alınmaması ve bekletilmesi amacıyla kullanılır. Bu yöntemde veriler sorguya bağlı olarak çekilir ve veri setinin içindeki tüm dataları yüklemek yerine kullanılacağı an tekrar sorgu atar ve veriyi çeker.
+Eager Loading
+
+Lazy Loading’in tam tersi yönde çalışır. Kullanacağımız nesneleri, nesnenin ihtiyaç anından çok önce yaratır ve bekletir. Eager loading Linq sorgusu çalıştırıldığında verilerin tamamını yükler ve hafızaya alır.
+Rabbit mq:Tanım olarak Mesaj Kuyruğu sistemi diyebiliriz, tabi burada mesaj kuyruğundan kastımız herhangi bir işlem (process) olabilir. Genelde mesajlaşma sistemlerinde kullanılmaya başlansa da zaman içerisinde değişen ihtiyaçlardan dolayı projelerin ölçeklerinin büyümesi, yoğun istek(request) almaları , gelen isteklere cevap (response) zamanı uzaması gibi durumlardan dolayı kullanıcı kitlelerinin kaybedilmemesi, hizmetlerin aksamasının ve ihtiyaçlardan dolayı kullanım alanları gitgide genişledi. Bankaların kullandığı EFT vb. işlemlerde, yoğun istek (request) alan e-ticaret sistemlerinin olmazsa olmazı haline geldi.
+
+Somut olarak; Postane veya Kargo firması gibi düşünebiliriz.
+
+“Process olarak bilgi (nesne) kargoya verilir, kargo firması (kendi iş akışları doğrultusunda) işleme alır ve göndericiye ulaştırılır, kargo ulaşana kadar siz kendi işlerinizi yapmaya devam edersiniz kargonun gönderilmesini beklemeyiz.”
+
+Benim karşılaştığım ve RabbitMQ kullanmamı gerektiren durumlara örnek vermek gerekirse;
+* E-mail gönderimi işlemlerinde
+* Hazır rapor sorgularının dışında ihtiyaca göre (anlık) oluşturulan parametrelerinin değişkenlik gösteren dinamik raporlama işlemlerde kullandım.
+
+“Rapor için kullanıcıdan seçtiği parametre ve bu parametreye bağlı şartlar doğrultusunda oluşturulan talep queue de saklanır, Consumer’in dinlediği kuyruktan istek raporu byte[] şeklinde saklanan veri JSON ile istenilen tipe dönüştürülerek veri gerekli veri kaynağından çekilir, kullanıcı isteğine göre xml-xls-txt vb. türünde kullanıcıya response olarak geri dönülür.”
+
+RabbitMQ asenkron şekilde çalışan bir yapıdır. Erlang programlama dili ile geliştirilmiştir.
+
+RabbitMQ Kurulumu
+RabbitMQ Erlang programlama dili ile geliştirildiğinden bahsetmiştik.
+
+İlk adım olarak http://erlang.org/download/ adresten istenilen versiyonu seçerek (.exe) kurulumu yapalım.
+İkinci adımda https://www.rabbitmq.com/install-windows.html adresinden RabbitMQ kurulumu yapalım.
+RabbitMQ Konfigürasyon
+Ortam değişkenlerine (Environment variables) RabbitMQ node name ekleyelim.
+
+RabbitMQ kurulumunu yaptığımız makine-bilgisayar’ın host name ile RabbitMQ node name aynı olmalıdır.
+
+Ortam değişkenlerini açmak için.
+
+Bilgisayarım-(This PC) => Sağ tık => Özellikler (Properties)
+
+
+Bu ekranda Advanced system settings (Gelişmiş sistem Ayarları) tıklanır ve system properties ekranı açılır.
+
+
+Advanced (Gelişmiş) sekmesinden Enviroment Variables (ortam değişkenlerine) tıklayalım.
+Advanced (Gelişmiş) sekmesinden Environment Variables (ortam değişkenlerine) tıklayalım.
+
+
+ademolguner1903 value değeri benim RabbitMQ kurmuş olduğum bilgisayarımın host name bilgisidir. Siz de aynı şekilde kurulumu yapmış olduğunuz makineye ait host name bilgisini girerek ekleyelim.
+
+Bir sonraki konfigürasyon işlemi için Windows tuşuna basıp arama kısmına “RabbitMQ Command Prompt” yazarak arayalım.
+
+
+RabbitMQ Command Prompt’a tıklayalım ve karşımıza çıkan ekran:
+
+
+RabbitMQ kurulumlarından sonra RabbitMQ Plugin-Servisini aktif etmek için komut satırı dizesine alttaki komutu yazalım ve Servis-Plugin’i aktifleştirilmiş olur.
+
+rabbitmq-plugins enable rabbitmq_management
+
+
+Kurulum ve konfigürasyon işlemlerini tamamladık RabbitMQ için browser’a 15672 portundan artık erişebiliriz.
+
+http://localhost:15672
+
+
+http://localhost:15672
+Karşımıza local makinemize kurmuş olduğumuz RabbitMQ login ekranı gelecektir. RabbitMQ kurulumunda varsayılan olarak kullanıcı adı ve şifre tanımlanmış olarak gelir.
+
+UserName: guest
+Password : guest
+
+Varsayılan olarak gelen bu kullanıcı adı ve şifre bilgilerini güncelleyebilir veya birden çok kullanıcı oluşturabiliriz.
+
+Yeni Kullanıcı ve şifre oluşturma, yetkilendirme işlemlerini alttaki komutlar ile yapabiliriz.
+
+rabbitmqctl add_user test test
+rabbitmqctl set_user_tags test administrator
+rabbitmqctl set_permissions -p / test “.*” “.*” “.*”
+rabbitmqctl change_password test test
+
+Login işlemlerinden sonra RabbitMQ sunucusuna ait paneli görüntülenmektedir. Nodes, Connections, Channels, Exchanges, Queues vb. ekranları görüntüleyebiliriz.
+
+
+RabbitMQ ve Bileşenleri
+https://www.rabbitmq.com/tutorials/amqp-concepts.html
+https://www.rabbitmq.com/tutorials/amqp-concepts.html
+1- Publisher: Kuyruğa mesaj gönderen uygulamadır.
+2- Consumer: Kuyruğu dinleyen uygulamadır.
+3- RabbitMQ
+* Routing key: Mesajımızı yönlendireceğimiz anahtarımızdır.
+* Exchange: Mesajı ilgili “routing key”e göre ilgili queue’ya yönlendiren bölüm
+* Queue: Mesajların son olarak düştüğü kuyruk
+* Exchange type: Gelen mesajın, “routing key”e göre hangi queue’ya “nasıl” gönderileceğini belirtir.
+
+Exchange Types
+1- Direct Exchange: “routing key” (yönlendirme anahtarı) belirlenir ve bu anahtar bilgisi kuyruğa yazılır. “consumer” tarafından da bu anahtarlara göre işlem yapılır.
+
+
+2- Fanout Exchange: Mesajlar “exchange” de yer alan bütün kuyruklara gönderilir. Sadece yönlendirme anahtarı (Routing Key) olanlar göz ardı edilir.
+
+
+3- Topic Exchange: verilen yönlendirme anahtarlarına göre farklı kuyruklara yazma işlemleri rabbit exchange topic ile yapılabilir ve bu yazılan mesajlar “consumer” lar tarafından direk yönlendirme anahtarına göre veya (*) ile erişilebilir. Ayrıca (#) ile “exchange” de bulunan bütün kuyruklara ait mesajları yakalamak mümkün.
+
+erkek.liked -> Erkeklerin beğendikleri
+erkek.unliked -> Erkeklerin beğenmedikleri
+kadin.liked -> Kadınların beğendikleri
+kadin.unliked -> Kadınların beğenmediği ürünler
+erkek.* -> Erkeklerin beğendiği ve beğenmediği herşey
+kadin.* -> Kadınların beğendiği ve beğenmediği herşey
+*.liked -> Bütün beğenilenler
+*.unliked -> Bütün beğenilmeyenler
+# -> Herşey
+
+
+4- Headers Exchange: Topic exchange” in benzeridir. Yönlendirme anahtarları yerine mesajlar “header” içerir ve kuyruk eşleştirmesi gönderilen header lara göre yapılır.
+Redis:
+Redis, geliştiriciler tarafından en çok kullanılan ve bilinen NoSQL veritabanlarından birisidir. Redis, açık kaynaktır ve kaynak kodlarına GitHub üzerinden erişilebilmektedir. C dili ile yazıldığı için yüksek performanslı sonuçlar vermektedir. Linux ve türevi işletim sistemleri tarafından desteklenmekte fakat Windows tarafı için resmi bir destek olmasa da community tarafından desteklenmektedir.
+
+Redis günümüz sistemlerinde en çok kullanılan anahtar-değer veritabanıdır ve genellikle caching, session yönetimi, pub/sub, message broker amacıyla kullanılmaktadır
+
