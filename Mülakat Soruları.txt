@@ -1,3 +1,6 @@
+Local Storage: JavaScript sitelerinin ve uygulamalarının son kullanma tarihi olmadan, bir web tarayıcısında key/value değerlerinin kaydedebilmesine izin veren bir özelliktir.
+
+Session Storage: Bir web tarayıcısında key/value değerlerini yalnızca bir oturum süresi için tarayıcıya kaydedebilmesine izin veren bir özelliktir. Yani tarayıcı sekmesi kapatıldığında veriler de kaybolur
 1)Aop Nedir
 Aspect oriented programming kısa adıyla AOP, uygulamanızdaki iş mantığı (business logic) ile uygulamanızın genelinde ortak kullanılabilecek olan yapıların ayrılmasını sağlar. İş mantığı haricindeki yapılara örnek verecek olursak;
 logging, exception handling, caching, authentication, authorization, transaction vb. işlemlerdir.
