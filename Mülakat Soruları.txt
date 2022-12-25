@@ -1,3 +1,11 @@
+– Transient: Nesneye yapılan her çağrıda yeni bir nesne oluşturulur. Stateless nesneye ihtiyaç duyulan durumlarda kullanılır. AddTransient() metodu aracılığıyla Transient tipinde bağımlılıklar oluşturabiliriz.
+
+– Scoped: Yapılan her request’te nesne tekrar oluşur ve bir request içerisinde sadece bir tane nesne kullanılır. Bu yöntem için de AddScoped() metodu kullanılıyor. Transient ve Scoped kullanım şekilleri nesne oluşturma zamanları açısından biraz karıştırılabilir. Transient’da her nesne çağrımında yeni bir instance oluşturulurken, Scoped’da ise request esnasında yeni bir instance oluşur ve o request sonlanana kadar aynı nesne kullanılır. Request bazında stateless nesne kullanılması istenen durumlarda Scoped bağımlılıkları oluşturabiliriz.
+
+– Singleton: ASP.NET Core uygulaması başlatıldığında register edilen nesneye ait sadece bir tane instance oluşur ve uygulamadaki her yerden bu referans çağrılır. Uygulama yeniden başlatılana kadar bu nesne referansı kullanılır, farklı bir nesne referansı ikinci kez oluşturulmaz. Bu yöntem için de AddSingleton() metodunu kullanıyoruz.
+
+
+
 Local Storage: JavaScript sitelerinin ve uygulamalarının son kullanma tarihi olmadan, bir web tarayıcısında key/value değerlerinin kaydedebilmesine izin veren bir özelliktir.
 
 Session Storage: Bir web tarayıcısında key/value değerlerini yalnızca bir oturum süresi için tarayıcıya kaydedebilmesine izin veren bir özelliktir. Yani tarayıcı sekmesi kapatıldığında veriler de kaybolur
